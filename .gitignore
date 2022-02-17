@@ -1,0 +1,21 @@
+# ignore pycache files
+__pycache__/
+*.py[cod]
+
+# ignore vscode folder
+.vscode/*
+
+# ignore data folder
+dataset
+dataset/*
+output
+output/*
+
+# ignore test code
+code_test/*
+
+# ignore checkpoint foler
+ckpt/*
+
+# ignore training script file
+*.sh
