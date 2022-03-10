@@ -11,7 +11,8 @@ class DBSNl(nn.Module):
     Dilated Blind-Spot Network (cutomized light version)
 
     self-implemented version of the network from "Unpaired Learning of Deep Image Denoising (ECCV 2020)"
-    several modificaions are included and see our supple for more details. 
+    and several modificaions are included. 
+    see our supple for more details. 
     '''
     def __init__(self, in_ch=3, out_ch=3, base_ch=128, num_module=9):
         '''

@@ -82,24 +82,6 @@ class prep_SIDD(DenoiseDataSet):
         return {'clean': clean, 'real_noisy': noisy_img} #'instances': instance }
 
 @regist_dataset
-class prep_SIDD_benchmark(DenoiseDataSet):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def _scan(self):
-        self.dataset_path = os.path.join(self.dataset_dir, 'prep/SIDD_benchmark_s256_o0')
-        assert os.path.exists(self.dataset_path), 'There is no dataset %s'%self.dataset_path
-        for root, _, files in os.walk(os.path.join(self.dataset_path, 'RN')):
-            self.img_paths = files
-
-    def _load_data(self, data_idx):
-        file_name = self.img_paths[data_idx]
-
-        noisy_img = self._load_img(os.path.join(self.dataset_path, 'RN' , file_name))
-
-        return {'real_noisy': noisy_img} #'instances': instance }
-
-@regist_dataset
 class SIDD_val(DenoiseDataSet):
     '''
     SIDD validation dataset class 
@@ -164,3 +146,22 @@ class SIDD_benchmark(DenoiseDataSet):
         noisy_img = self._load_img_from_np(noisy_img)
 
         return {'real_noisy': noisy_img}
+
+@regist_dataset
+class prep_SIDD_benchmark(DenoiseDataSet):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def _scan(self):
+        self.dataset_path = os.path.join(self.dataset_dir, 'prep/SIDD_benchmark_s256_o0')
+        assert os.path.exists(self.dataset_path), 'There is no dataset %s'%self.dataset_path
+        for root, _, files in os.walk(os.path.join(self.dataset_path, 'RN')):
+            self.img_paths = files
+
+    def _load_data(self, data_idx):
+        file_name = self.img_paths[data_idx]
+
+        noisy_img = self._load_img(os.path.join(self.dataset_path, 'RN' , file_name))
+
+        return {'real_noisy': noisy_img} #'instances': instance }
+        

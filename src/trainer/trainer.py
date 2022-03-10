@@ -20,7 +20,7 @@ class Trainer(BaseTrainer):
         self._before_test()
 
         # set image save path
-        for i in range(50):
+        for i in range(60):
             test_time = datetime.datetime.now().strftime('%m-%d-%H-%M') + '-%02d'%i
             img_save_path = 'img/test_%s_%03d_%s' % (self.cfg['test']['dataset'], self.epoch, test_time)
             if not self.file_manager.is_dir_exist(img_save_path): break

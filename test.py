@@ -13,6 +13,7 @@ def main():
     args.add_argument('-c', '--config',       default=None,  type=str)
     args.add_argument('-e', '--ckpt_epoch',   default=0,     type=int)
     args.add_argument('-g', '--gpu',          default=None,  type=str)
+    args.add_argument(      '--pretrained',   default=None,  type=str)
     args.add_argument(      '--thread',       default=4,     type=int)
     args.add_argument(      '--self_en',      action='store_true')
     args.add_argument(      '--test_img',     default=None,  type=str)

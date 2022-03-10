@@ -13,9 +13,8 @@ def main():
     args.add_argument('-s', '--session_name', default=None,  type=str)
     args.add_argument('-c', '--config',       default=None,  type=str)
     args.add_argument('-r', '--resume',       action='store_true')
-    args.add_argument(      '--gpu',          default=None,  type=str)
+    args.add_argument('-g', '--gpu',          default=None,  type=str)
     args.add_argument(      '--thread',       default=4,     type=int)
-    args.add_argument(      '--other',        default=None,  type=str)
 
     args = args.parse_args()
 

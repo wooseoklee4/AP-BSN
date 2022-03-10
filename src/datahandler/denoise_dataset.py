@@ -16,17 +16,17 @@ class DenoiseDataSet(Dataset):
         '''
         Base denoising dataset class for various dataset.
 
-        to build custom dataset class, below functions must be implemented in inherited class. (or see other dataset class already implemented.)
+        to build custom dataset class, below functions must be implemented in the inherited class. (or see other dataset class already implemented.)
             - self._scan(self) : scan image data & save its paths. (saved to self.img_paths)
             - self._load_data(self, data_idx) : load single paired data from idx as a form of dictionary.
 
         Args:
-            add_noise (str)            : configuration of addictive noise to synthesize noisy image. (see _add_noise() for more details.)
-            crop_size (list)           : crop size, e.g. [W] or [H, W] and no crop if None
-            aug (list)                 : list of data augmentations (see _augmentation() for more details.)
-            n_repeat (int)             : number of repeat for each data.
-            n_data (int)               : number of data to be used. (default: None = all data)
-            ratio_data (float)         : ratio of data to be used. (activated when n_data=None, default: None = all data)
+            add_noise (str)     : configuration of additive noise to synthesize noisy image. (see _add_noise() for more details.)
+            crop_size (list)    : crop size, e.g. [W] or [H, W] and no crop if None
+            aug (list)          : list of data augmentations (see _augmentation() for more details.)
+            n_repeat (int)      : number of repeat for each data.
+            n_data (int)        : number of data to be used. (default: None = all data)
+            ratio_data (float)  : ratio of data to be used. (activated when n_data=None, default: None = all data)
         '''
         self.dataset_dir = './dataset'
         if not os.path.isdir(self.dataset_dir):
@@ -58,7 +58,7 @@ class DenoiseDataSet(Dataset):
     def __getitem__(self, idx):
         '''
         final dictionary shape of data:
-        data{'clean', 'syn_noisy', 'real_noisy', 'noisy (any of real[first priority] and syn)' etc}
+        {'clean', 'syn_noisy', 'real_noisy', 'noisy (any of real[first priority] and syn)', etc}
         '''
         # calculate data index
         data_idx = idx % self.n_data
@@ -83,14 +83,18 @@ class DenoiseDataSet(Dataset):
                 raise RuntimeError('there is no clean or real image to synthesize. (synthetic noise type: %s)'%self.add_noise_type)
 
         # data augmentation
-        if self.aug != None:
+        if self.aug is not None:
             data = self._augmentation(data, self.aug)
 
-        # add general label 'noisy' to use any of real_noisy or syn_noisy
+        # add general label 'noisy' to use any of real_noisy or syn_noisy (real first)
         if 'real_noisy' in data or 'syn_noisy' in data:
             data['noisy'] = data['real_noisy'] if 'real_noisy' in data else data['syn_noisy']
 
         return data
+
+    def _scan(self):
+        raise NotImplementedError
+        # TODO fill in self.img_paths (include path from project directory)
 
     def _load_data(self, data_idx):
         raise NotImplementedError
@@ -99,10 +103,6 @@ class DenoiseDataSet(Dataset):
         #   'clean' : clean image without noise (gt or anything).
         #   'real_noisy' : real noisy image or already synthesized noisy image.
         #   'instances' : any other information of capturing situation.
-
-    def _scan(self):
-        raise NotImplementedError
-        # TODO fill in self.img_paths (include path from project directory)
 
     #----------------------------#
     #  Image handling functions  #
@@ -113,6 +113,7 @@ class DenoiseDataSet(Dataset):
         return self._load_img_from_np(img, as_gray, RGBflip=True)
 
     def _load_img_from_np(self, img, as_gray=False, RGBflip=False):
+        # if color
         if len(img.shape) != 2:
             if as_gray:
                 # follows definition of sRBG in terms of the CIE 1931 linear luminance.
@@ -124,7 +125,8 @@ class DenoiseDataSet(Dataset):
                 if RGBflip:
                     img = np.flip(img, axis=2)
                 img = np.transpose(img, (2,0,1))
-        else:
+        # if gray
+        else:                   
             img = np.expand_dims(img, axis=0)
         return torch.from_numpy(np.ascontiguousarray(img).astype(np.float32))
 
@@ -211,6 +213,9 @@ class DenoiseDataSet(Dataset):
         return (img*stds) + means
 
     def _parse_add_noise(self, add_noise_str:str) -> Tuple:
+        '''
+        noise_type-opt0:opt1:opt2-clamp
+        '''
         if add_noise_str == 'bypass':
             return 'bypass', None, None
         elif add_noise_str != None:

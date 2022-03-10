@@ -90,22 +90,3 @@ class prep_NIND(DenoiseDataSet):
         clean = self._load_img(os.path.join(self.dataset_path, 'CL' , file_name))
 
         return {'clean': clean, 'real_noisy': noisy_img} #'instances': instance }
-
-@regist_dataset
-class NIND_samples(DenoiseDataSet):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def _scan(self):
-        self.dataset_path = os.path.join(self.dataset_dir, 'prep/NIND_samples')
-        assert os.path.exists(self.dataset_path), 'There is no dataset %s'%self.dataset_path
-        for root, _, files in os.walk(os.path.join(self.dataset_path, 'N')):
-            self.img_paths = files
-
-    def _load_data(self, data_idx):
-        file_name = self.img_paths[data_idx]
-
-        noisy_img = self._load_img(os.path.join(self.dataset_path, 'N' , file_name))
-        clean = self._load_img(os.path.join(self.dataset_path, 'C' , file_name))
-
-        return {'clean': clean, 'real_noisy': noisy_img} #'instances': instance }

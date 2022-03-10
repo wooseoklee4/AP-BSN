@@ -27,8 +27,8 @@ status_len = 13
 
 class BaseTrainer():
     '''
-    Base trainer classs to implement other trainer classes.
-    below function would be implemented.
+    Base trainer class to implement other trainer classes.
+    below function should be implemented in each of trainer class.
     '''
     def test(self):
         raise NotImplementedError('define this function for each trainer')
@@ -105,7 +105,7 @@ class BaseTrainer():
 
         # load checkpoint file
         ckpt_epoch = self._find_last_epoch() if self.cfg['ckpt_epoch'] == -1 else self.cfg['ckpt_epoch']
-        ckpt_name  = self.test_cfg['ckpt_name'] if 'ckpt_name' in self.test_cfg else None
+        ckpt_name  = self.cfg['pretrained'] if self.cfg['pretrained'] is not None else None
         self.load_checkpoint(ckpt_epoch, name=ckpt_name)
         self.epoch = self.cfg['ckpt_epoch'] # for print or saving file name.
 
@@ -579,6 +579,9 @@ class BaseTrainer():
         if hasattr(self, 'optimizer'):
             for key in self.optimizer:
                 self.optimizer[key].load_state_dict(saved_checkpoint['optimizer_weight'][key])
+
+        # print message
+        self.logger.note('[%s] model loaded : %s'%(self.status, file_name))
 
     def _checkpoint_name(self, epoch):
         return self.session_name + '_%03d'%epoch + '.pth'
