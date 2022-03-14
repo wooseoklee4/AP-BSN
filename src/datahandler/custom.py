@@ -28,7 +28,7 @@ class CustomSample(DenoiseDataSet):
         file_name = self.img_paths[data_idx]
 
         noisy_img = self._load_img(os.path.join(self.dataset_path, 'RN' , file_name))
-        clean = self._load_img(os.path.join(self.dataset_path, 'CL' , file_name))
+        clean_img = self._load_img(os.path.join(self.dataset_path, 'CL' , file_name))
 
-        # return {'clean': clenan, 'real_noisy': noisy_img} # paired dataset
+        return {'clean': clean_img, 'real_noisy': noisy_img} # paired dataset
         # return {'real_noisy': noisy_img} # only noisy image dataset

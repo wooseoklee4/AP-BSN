@@ -1,6 +1,6 @@
 # AP-BSN: Self-Supervised Denoising for Real-World Images via Asymmetric PD and Blind-Spot Network
 
-This is an official PyTorch implementation of "AP-BSN: Self-Supervised Denoising for Real-World Images via Asymmetric PD and Blind-Spot Network" in CVPR 2022.
+This is an official PyTorch implementation of ["AP-BSN: Self-Supervised Denoising for Real-World Images via Asymmetric PD and Blind-Spot Network"]() in CVPR 2022.
 
 ![main_fig](./figs/main.png)
 
@@ -43,7 +43,7 @@ AP-BSN
 - Make `dataset` folder which contains various dataset.
   - place [DND](https://noise.visinf.tu-darmstadt.de/), [SIDD](https://www.eecs.yorku.ca/~kamel/sidd/), [NIND](https://commons.wikimedia.org/wiki/Natural_Image_Noise_Dataset) datasets at here.
   - `prep` folder contains prepared data for efficient training. (croped patches with overlapping)
-  - how to prepare existing or custom dataset ㅑㄴ available at [here](./src/datahandler/prepare_dataset.md).
+  - how to prepare existing or custom dataset is available at [here](./src/datahandler/prepare_dataset.md).
 - Make `output` folder which contains experimental results including checkpoint, val/test images and training logs.
 - Recommend to use __soft link__ due to folders would take large stroage capacity.
 
@@ -53,10 +53,10 @@ You can download pretrained checkpoints of our method. Place these files into `c
 
 | Method |      Dataset   |      Config file     | Pre-trained |
 | :----: | :------------: | :------------------: | :---------: |
-| AP-BSN |      SIDD      |    APBSN_SIDD.yaml   | [APBSN_SIDD.pth](link_here) |
-| AP-BSN | SIDD_benchmark | APBSN_SIDDbench.yaml | [APBSN_SIDDbench.pth](link_here) |
-| AP-BSN |       DND      |     APBSN_DND.yaml   | [APBSN_DND.pth](link_here) |
-| AP-BSN |      NIND      |    APBSN_NIND.yaml   | [APBSN_NIND.pth](link_here) |
+| AP-BSN |      SIDD      |    APBSN_SIDD.yaml   | [To be uploaded]() |
+| AP-BSN | SIDD_benchmark | APBSN_SIDDbench.yaml | [To be uploaded]() |
+| AP-BSN |       DND      |     APBSN_DND.yaml   | [To be uploaded]() |
+| AP-BSN |      NIND      |    APBSN_NIND.yaml   | [To be uploaded]() |
 
 
 ## Quick start
@@ -83,10 +83,10 @@ Examples:
 
 ```
 # Train AP-BSN for the SIDD dataset using gpu:0
-train.py -c APBSN_SIDD -g 0
+python train.py -c APBSN_SIDD -g 0
 
 # Train AP-BSN for the DND dataset wtih session name "MyAPBSN_DND" using gpu:0 and keep training (resume)
-train.py -c APBSN_DND -g 0 -s MyAPBSN_DND -r
+python train.py -c APBSN_DND -g 0 -s MyAPBSN_DND -r
 ```
 
 ### Test
@@ -114,13 +114,13 @@ Examples:
 
 ```
 # Test SIDD dataset for 20 epoch model in gpu:0
-test.py -c APBSN_SIDD -g 0 -e 20
+python test.py -c APBSN_SIDD -g 0 -e 20
 
 # Test SIDD dataset for pre-trained model (./ckpt/AP-BSN_SIDD.pth) in gpu:0
-test.py -c APBSN_SIDD -g 0 --pretrained AP-BSN_SIDD.pth
+python test.py -c APBSN_SIDD -g 0 --pretrained AP-BSN_SIDD.pth
 
-# Test a image (./sample_image.png) with pre-trained SIDD AP-BSN in gpu:0
-test.py -c APBSN_SIDD -g 0 --pretrained AP-BSN_SIDD.pth --test_img sample_image.png
+# Test a image (./sample.png) with pre-trained SIDD AP-BSN in gpu:0 (saved as ./sample_DN.png)
+python test.py -c APBSN_SIDD -g 0 --pretrained AP-BSN_SIDD.pth --test_img sample_image.png
 ```
 
 ## Results

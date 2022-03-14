@@ -34,7 +34,7 @@ AP-BSN
 │  │  │  ├─ RN
 ```
 
-To prepare (crop image) above datasets, you should run below scripts:  
+To prepare (save cropped images into `prep` folder) DND, SIDD, NIND datasets, you should run below scripts:  
 
 ```
 # Default patch size is 512x512 with 128 overlapping
@@ -84,8 +84,7 @@ class CustomSample(DenoiseDataSet):
         # return {'clean': clenan, 'real_noisy': noisy_img} # paired dataset
         # return {'real_noisy': noisy_img} # only noisy image dataset
 ```
-In our code, we load images into [0, 255] range and RGB color order. Additionally, we recommend you to prepare your custom dataset similar with above procedure.  
-After this, change training dataset name in configuration file. For example:
+In our code, we load images into [0, 255] range and RGB color order. Additionally, we recommend you to prepare your custom dataset similar with above procedure. After this, change training dataset configuration. For example:
 
 ```
 ...
