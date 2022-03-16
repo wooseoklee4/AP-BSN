@@ -37,8 +37,19 @@ AP-BSN
 To prepare (save cropped images into `prep` folder) DND, SIDD, NIND datasets, you should run below scripts:  
 
 ```
-# Default patch size is 512x512 with 128 overlapping
+usage: python prep.py [-d DATASET_NAME] [-s PATCH_SIZE] [-o OVERLAP_SIZE] [-p PROCESS_NUM] 
 
+Prepare dataset (crop with overlapping).
+
+Arguments:      
+  -d DATASET_NAME              Dataset name (e.g. SIDD, DND)
+  -s PATCH_SIZE    (optional)  Size of cropped patches (default: 512)
+  -o OVERLAP_SIZE  (optional)  Size of overlap between patches (default: 128)
+  -p PROCESS_NUM   (optional)  Number of multi-process (defaults: 8)
+```
+
+Examples:
+```
 # prepare DND dataset
 python prep.py --dataset DND
 

@@ -1,5 +1,4 @@
 import random, os
-from typing import Tuple
 
 import cv2
 import numpy as np
@@ -212,7 +211,7 @@ class DenoiseDataSet(Dataset):
 
         return (img*stds) + means
 
-    def _parse_add_noise(self, add_noise_str:str) -> Tuple:
+    def _parse_add_noise(self, add_noise_str:str):
         '''
         noise_type-opt0:opt1:opt2-clamp
         '''
@@ -320,10 +319,11 @@ class DenoiseDataSet(Dataset):
 
             print('image %04d saved!'%idx)
 
-    def prep_save(self, img_size:int, overlap:int, clean:bool=False, syn_noisy:bool=False, real_noisy:bool=False):
+    def prep_save(self, img_idx:int, img_size:int, overlap:int, clean:bool=False, syn_noisy:bool=False, real_noisy:bool=False):
         '''
-        chopping images into mini-size patches for efficient training.
+        cropping am image into mini-size patches for efficient training.
         Args:
+            img_idx (int) : index of image
             img_size (int) : size of image
             overlap (int) : overlap between patches
             clean (bool) : save clean image (default: False)
@@ -346,51 +346,19 @@ class DenoiseDataSet(Dataset):
             real_noisy_dir = os.path.join(self.dataset_dir, 'prep', d_name, 'RN')
             os.makedirs(real_noisy_dir, exist_ok=True)
 
-        for img_idx in range(self.__len__()):
-            data = self.__getitem__(img_idx)
+        data = self.__getitem__(img_idx)
 
-            c,h,w = data['clean'].shape if 'clean' in data else data['real_noisy'].shape
-            for h_idx in range((h-img_size)//stride + 1):
-                for w_idx in range((w-img_size+1)//stride + 1):
-                    hl, hr = h_idx*stride, h_idx*stride+img_size
-                    wl, wr = w_idx*stride, w_idx*stride+img_size
-                    if clean:      cv2.imwrite(os.path.join(clean_dir,      '%d_%d_%d.png'%(img_idx, h_idx, w_idx)), tensor2np(data['clean'][:,hl:hr,wl:wr])) 
-                    if syn_noisy:  cv2.imwrite(os.path.join(syn_noisy_dir,  '%d_%d_%d.png'%(img_idx, h_idx, w_idx)), tensor2np(data['syn_noisy'][:,hl:hr,wl:wr])) 
-                    if real_noisy: cv2.imwrite(os.path.join(real_noisy_dir, '%d_%d_%d.png'%(img_idx, h_idx, w_idx)), tensor2np(data['real_noisy'][:,hl:hr,wl:wr])) 
+        c,h,w = data['clean'].shape if 'clean' in data else data['real_noisy'].shape
+        for h_idx in range((h-img_size)//stride + 1):
+            for w_idx in range((w-img_size+1)//stride + 1):
+                hl, hr = h_idx*stride, h_idx*stride+img_size
+                wl, wr = w_idx*stride, w_idx*stride+img_size
+                if clean:      cv2.imwrite(os.path.join(clean_dir,      '%d_%d_%d.png'%(img_idx, h_idx, w_idx)), tensor2np(data['clean'][:,hl:hr,wl:wr])) 
+                if syn_noisy:  cv2.imwrite(os.path.join(syn_noisy_dir,  '%d_%d_%d.png'%(img_idx, h_idx, w_idx)), tensor2np(data['syn_noisy'][:,hl:hr,wl:wr])) 
+                if real_noisy: cv2.imwrite(os.path.join(real_noisy_dir, '%d_%d_%d.png'%(img_idx, h_idx, w_idx)), tensor2np(data['real_noisy'][:,hl:hr,wl:wr])) 
 
-            print('img%d'%img_idx)
-
-    def prep_save_mat(self, img_size:int, overlap:int, clean=False, syn_noisy=False, real_noisy=False):
-        d_name = '%s_s%d_o%d'%(self.__class__.__name__, img_size, overlap)
-        os.makedirs(os.path.join(self.dataset_dir, 'prep', d_name), exist_ok=True)
-
-        assert overlap < img_size
-        stride = img_size - overlap
-
-        if clean:
-            clean_dir = os.path.join(self.dataset_dir, 'prep', d_name, 'CL')
-            os.makedirs(clean_dir, exist_ok=True)
-        if syn_noisy: 
-            syn_noisy_dir = os.path.join(self.dataset_dir, 'prep', d_name, 'SN')
-            os.makedirs(syn_noisy_dir, exist_ok=True)
-        if real_noisy:
-            real_noisy_dir = os.path.join(self.dataset_dir, 'prep', d_name, 'RN')
-            os.makedirs(real_noisy_dir, exist_ok=True)
-
-        for img_idx in range(self.__len__()):
-            data = self.__getitem__(img_idx)
-
-            c,h,w = data['clean'].shape if 'clean' in data else data['real_noisy'].shape
-            for h_idx in range((h-img_size)//stride + 1):
-                for w_idx in range((w-img_size+1)//stride + 1):
-                    hl, hr = h_idx*stride, h_idx*stride+img_size
-                    wl, wr = w_idx*stride, w_idx*stride+img_size
-                    if clean:      savemat(os.path.join(clean_dir,      '%d_%d_%d.mat'%(img_idx, h_idx, w_idx)), {'x': tensor2np(data['clean'][:,hl:hr,wl:wr])})
-                    if syn_noisy:  savemat(os.path.join(syn_noisy_dir,  '%d_%d_%d.mat'%(img_idx, h_idx, w_idx)), {'x': tensor2np(data['syn_noisy'][:,hl:hr,wl:wr])})
-                    if real_noisy: savemat(os.path.join(real_noisy_dir, '%d_%d_%d.mat'%(img_idx, h_idx, w_idx)), {'x': tensor2np(data['real_noisy'][:,hl:hr,wl:wr])})
-
-            print('img%d'%img_idx)
-        return
+        print('Cropped image %d / %d'%(img_idx, self.__len__()))
+        
 
     #----------------------------#
     #            etc             #

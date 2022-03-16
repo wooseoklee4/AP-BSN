@@ -1,5 +1,6 @@
 import os
 
+import torch
 import h5py
 
 from src.datahandler.denoise_dataset import DenoiseDataSet
@@ -21,7 +22,7 @@ class DND(DenoiseDataSet):
     def _load_data(self, data_idx):
         with h5py.File(self.img_paths[data_idx], 'r') as img_file:
             noisy_img = img_file[list(img_file.keys())[0]][()]*255.
-        return {'real_noisy': noisy_img}
+        return {'real_noisy': torch.from_numpy(noisy_img)}
 
 @regist_dataset
 class prep_DND(DenoiseDataSet):

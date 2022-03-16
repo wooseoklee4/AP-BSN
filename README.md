@@ -64,8 +64,8 @@ You can download pretrained checkpoints of our method. Place these files into `c
 ### Training
 
 ```
-usage: train.py [-c CONFIG_FILE_NAME] [-g GPU_NUM] 
-                [-s SESSION_NAME] [-r] [--thread THREAD_NUM]
+usage: python train.py [-c CONFIG_FILE_NAME] [-g GPU_NUM] 
+                       [-s SESSION_NAME] [-r] [--thread THREAD_NUM]
 
 Train model.
 
@@ -92,9 +92,9 @@ python train.py -c APBSN_DND -g 0 -s MyAPBSN_DND -r
 ### Test
 
 ```
-usage: test.py [-c CONFIG_FILE_NAME] [-g GPU_NUM] 
-(model select) [-e CKPT_EPOCH] [--pretrained MODEL] 
-               [-s SESSION_NAME] [--thread THREAD_NUM] [--test_img IMAGE]
+usage: python test.py [-c CONFIG_FILE_NAME] [-g GPU_NUM] 
+(model select)        [-e CKPT_EPOCH] [--pretrained MODEL] 
+                      [-s SESSION_NAME] [--thread THREAD_NUM] [--test_img IMAGE]
 
 Test dataset or a image using pre-trained model.
 

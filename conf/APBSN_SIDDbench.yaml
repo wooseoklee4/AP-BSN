@@ -24,7 +24,7 @@ training:
     add_noise: None # e.g.) None bypass uni-15. gau-15. gau_blind-10.:50. het_gau-10.:50. see more detail in denoise_dataset.py
     crop_size: [120, 120]
     aug: ['hflip', 'rot']
-    n_repeat: 15
+    n_repeat: 19
   
   batch_size: 8
 

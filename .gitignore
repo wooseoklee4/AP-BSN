@@ -16,6 +16,7 @@ code_test/*
 
 # ignore checkpoint foler
 ckpt/*
+!ckpt/.gitkeep
 
 # ignore training script file
 *.sh
