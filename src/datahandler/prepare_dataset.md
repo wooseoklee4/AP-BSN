@@ -51,21 +51,21 @@ Arguments:
 Examples:
 ```
 # prepare DND dataset
-python prep.py --dataset DND
+python prep.py -d DND
 
 # prepare SIDD dataset
-python prep.py --dataset SIDD
+python prep.py -d SIDD
 
 # prepare SIDD benchmark dataset (benchmark have only patches of 256x256 size.)
-python prep.py --dataset benchmark --patch_size 256 --overlap 0
+python prep.py -d SIDD_benchmark -s 256 -o 0
 
 # prepare NIND dataset
-python prep.py --dataset NIND
+python prep.py -d NIND
 ```
 
 ## Custom dataset
 
-If you want to train our AP-BSN on custom images, you should make custom dataset class in [custom.py](./custom.py) file. There is a skeleton code for this. Fill in _scan() and _load_data() functions.  
+If you want to train our AP-BSN on your custom images, you should make custom dataset class in [custom.py](./custom.py) file. There is a skeleton code for this. Fill in _scan() and _load_data() functions.  
 
 ```
 @regist_dataset
@@ -95,7 +95,7 @@ class CustomSample(DenoiseDataSet):
         # return {'clean': clenan, 'real_noisy': noisy_img} # paired dataset
         # return {'real_noisy': noisy_img} # only noisy image dataset
 ```
-In our code, we load images into [0, 255] range and RGB color order. Additionally, we recommend you to prepare your custom dataset similar with above procedure. After this, change training dataset configuration. For example:
+In our code, we load images into [0, 255] range and RGB color order (it is optional). Additionally, we recommend you to prepare your custom dataset similar with above procedure. After this, change training dataset configuration. For example:
 
 ```
 ...

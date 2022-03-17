@@ -102,6 +102,7 @@ class BaseTrainer():
     def _before_test(self):
         # initialing
         self.module = self._set_module()
+        self._set_status('test')
 
         # load checkpoint file
         ckpt_epoch = self._find_last_epoch() if self.cfg['ckpt_epoch'] == -1 else self.cfg['ckpt_epoch']
@@ -685,12 +686,13 @@ class BaseTrainer():
     def _set_status(self, status:str):
         assert len(status) <= status_len, 'status string cannot exceed %d characters, (now %d)'%(status_len, len(status))
 
-        if len(status.split(' ')) > 1:
+        if len(status.split(' ')) == 2:
             s0, s1 = status.split(' ')
-            self.status = '%s '%s0.rjust(status_len//2) + \
-                          '%s'%s1.ljust((status_len+1)//2)
+            self.status = '%s'%s0.rjust(status_len//2) + ' '\
+                          '%s'%s1.ljust(status_len//2)
         else:
-            self.status = status.ljust(status_len)
+            sp = status_len - len(status)
+            self.status = ''.ljust(sp//2) + status + ''.ljust((sp+1)//2)
 
     def summary(self):
         summary = ''

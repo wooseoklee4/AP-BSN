@@ -17,7 +17,7 @@ _Blind-spot network (BSN) and its variants have made significant advances in sel
 Our experiments are done with:
 
 - Python 3.9.5
-- PyTroch 1.9.0
+- PyTorch 1.9.0
 - numpy 1.21.0
 - opencv 4.5.2
 - scikit-image 0.18.1
@@ -42,10 +42,10 @@ AP-BSN
 
 - Make `dataset` folder which contains various dataset.
   - place [DND](https://noise.visinf.tu-darmstadt.de/), [SIDD](https://www.eecs.yorku.ca/~kamel/sidd/), [NIND](https://commons.wikimedia.org/wiki/Natural_Image_Noise_Dataset) datasets at here.
-  - `prep` folder contains prepared data for efficient training. (croped patches with overlapping)
+  - `prep` folder contains prepared data for efficient training. (cropped patches with overlapping)
   - how to prepare existing or custom dataset is available at [here](./src/datahandler/prepare_dataset.md).
 - Make `output` folder which contains experimental results including checkpoint, val/test images and training logs.
-- Recommend to use __soft link__ due to folders would take large stroage capacity.
+- Recommend to use __soft link__ due to folders would take large storage capacity.
 
 ### Pre-trained Models
 
@@ -53,10 +53,10 @@ You can download pretrained checkpoints of our method. Place these files into `c
 
 | Method |      Dataset   |      Config file     | Pre-trained |
 | :----: | :------------: | :------------------: | :---------: |
-| AP-BSN |      SIDD      |    APBSN_SIDD.yaml   | [To be uploaded]() |
-| AP-BSN | SIDD_benchmark | APBSN_SIDDbench.yaml | [To be uploaded]() |
-| AP-BSN |       DND      |     APBSN_DND.yaml   | [To be uploaded]() |
-| AP-BSN |      NIND      |    APBSN_NIND.yaml   | [To be uploaded]() |
+| AP-BSN |       DND      |     APBSN_DND.yaml   | [APBSN_DND.pth](https://drive.google.com/file/d/1tixIn1qd9J2bQf4UZAXOq8AgLJ_FKohO/view?usp=sharing) |
+| AP-BSN |      SIDD      |    APBSN_SIDD.yaml   | [APBSN_SIDD.pth](https://drive.google.com/file/d/1dGOtPSet0WZZ5QzSPunXtEByk8lw_fCO/view?usp=sharing) |
+| AP-BSN | SIDD_benchmark | APBSN_SIDDbench.yaml | [APBSN_SIDDbench.pth](https://drive.google.com/file/d/15U229KMfD_hquB29MwgRfFO1U4l-U3_7/view?usp=sharing) |
+| AP-BSN |      NIND      |    APBSN_NIND.yaml   | [APBSN_NIND.pth](https://drive.google.com/file/d/1O0CKMc1C44__Ae80W0DsfOUMoELX4UHA/view?usp=sharing) |
 
 
 ## Quick start
@@ -85,7 +85,7 @@ Examples:
 # Train AP-BSN for the SIDD dataset using gpu:0
 python train.py -c APBSN_SIDD -g 0
 
-# Train AP-BSN for the DND dataset wtih session name "MyAPBSN_DND" using gpu:0 and keep training (resume)
+# Train AP-BSN for the DND dataset with session name "MyAPBSN_DND" using gpu:0 and keep training (resume)
 python train.py -c APBSN_DND -g 0 -s MyAPBSN_DND -r
 ```
 
@@ -116,11 +116,11 @@ Examples:
 # Test SIDD dataset for 20 epoch model in gpu:0
 python test.py -c APBSN_SIDD -g 0 -e 20
 
-# Test SIDD dataset for pre-trained model (./ckpt/AP-BSN_SIDD.pth) in gpu:0
-python test.py -c APBSN_SIDD -g 0 --pretrained AP-BSN_SIDD.pth
+# Test SIDD dataset for pre-trained model (./ckpt/APBSN_SIDD.pth) in gpu:0
+python test.py -c APBSN_SIDD -g 0 --pretrained APBSN_SIDD.pth
 
 # Test a image (./sample.png) with pre-trained SIDD AP-BSN in gpu:0 (saved as ./sample_DN.png)
-python test.py -c APBSN_SIDD -g 0 --pretrained AP-BSN_SIDD.pth --test_img sample_image.png
+python test.py -c APBSN_SIDD -g 0 --pretrained APBSN_SIDD.pth --test_img sample_image.png
 ```
 
 ## Results
