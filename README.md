@@ -1,6 +1,6 @@
 # AP-BSN: Self-Supervised Denoising for Real-World Images via Asymmetric PD and Blind-Spot Network
 
-This is an official PyTorch implementation of ["AP-BSN: Self-Supervised Denoising for Real-World Images via Asymmetric PD and Blind-Spot Network"]() in CVPR 2022.
+This is an official PyTorch implementation of "AP-BSN: Self-Supervised Denoising for Real-World Images via Asymmetric PD and Blind-Spot Network" in CVPR 2022.
 
 ![main_fig](./figs/main.png)
 
@@ -132,5 +132,10 @@ Here is reported results of AP-BSN. Please refer our paper for more detailed res
 ## Reference
 
 ```
-To be uploaded
+@inproceedings{lee2022apbsn,
+  title={AP-BSN: Self-Supervised Denoising for Real-World Images via Asymmetric PD and Blind-Spot Network}, 
+  author={Lee, Wooseok and Son, Sanghyun and Lee, Kyoung Mu},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year={2022}
+}
 ```
