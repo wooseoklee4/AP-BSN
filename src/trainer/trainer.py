@@ -17,7 +17,8 @@ class Trainer(BaseTrainer):
     def test(self):
         ''' initialization test setting '''        
         # initialization
-        self._before_test()
+        dataset_load = (self.cfg['test_img'] is None) and (self.cfg['test_dir'] is None)
+        self._before_test(dataset_load=dataset_load)
 
         # set image save path
         for i in range(60):
@@ -27,7 +28,11 @@ class Trainer(BaseTrainer):
 
         # -- [ TEST Single Image ] -- #
         if self.cfg['test_img'] is not None:
-            self.test_img()
+            self.test_img(self.cfg['test_img'])
+            exit()
+        # -- [ TEST Image Directory ] -- #
+        elif self.cfg['test_dir'] is not None:
+            self.test_dir(self.cfg['test_dir'])
             exit()
         # -- [ TEST DND Benchmark ] -- #
         elif self.test_cfg['dataset'] == 'DND_benchmark':

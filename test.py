@@ -17,6 +17,7 @@ def main():
     args.add_argument(      '--thread',       default=4,     type=int)
     args.add_argument(      '--self_en',      action='store_true')
     args.add_argument(      '--test_img',     default=None,  type=str)
+    args.add_argument(      '--test_dir',     default=None,  type=str)
 
     args = args.parse_args()
 

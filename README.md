@@ -59,7 +59,17 @@ You can download pretrained checkpoints of our method. Place these files into `c
 | AP-BSN |      NIND      |    APBSN_NIND.yaml   | [APBSN_NIND.pth](https://drive.google.com/file/d/1O0CKMc1C44__Ae80W0DsfOUMoELX4UHA/view?usp=sharing) |
 
 
-## Quick start
+## Quick test
+
+To test on a single noisy image with pre-trained AP-BSN in gpu:0.
+
+```
+python test.py -c APBSN_SIDD -g 0 --pretrained APBSN_SIDD.pth --test_img ./YOUR_IMAGE_NAME_HERE.png
+```
+
+---
+
+## Training & Test
 
 ### Training
 
@@ -94,7 +104,7 @@ python train.py -c APBSN_DND -g 0 -s MyAPBSN_DND -r
 ```
 usage: python test.py [-c CONFIG_FILE_NAME] [-g GPU_NUM] 
 (model select)        [-e CKPT_EPOCH] [--pretrained MODEL] 
-                      [-s SESSION_NAME] [--thread THREAD_NUM] [--test_img IMAGE]
+                      [-s SESSION_NAME] [--thread THREAD_NUM] [--test_img IMAGE] [--test_dir DIR]
 
 Test dataset or a image using pre-trained model.
 
@@ -106,6 +116,7 @@ Arguments:
   -s SESSION_NAME      (optional)  Name of training session (default: configuration file name)
   --thread THREAD_NUM  (optional)  Number of thread for dataloader. (default: 4)
   --test_img IMAGE     (optional)  Image directory to denoise a single image. (default: test dataset in config file)
+  --test_dir DIR       (optional)  Directory of images to denoise.
 ```
 
 You can also control detail test configurations (e.g. on/off R^3, test dataset, etc.) in each of config file.
@@ -119,15 +130,26 @@ python test.py -c APBSN_SIDD -g 0 -e 20
 # Test SIDD dataset for pre-trained model (./ckpt/APBSN_SIDD.pth) in gpu:0
 python test.py -c APBSN_SIDD -g 0 --pretrained APBSN_SIDD.pth
 
-# Test a image (./sample.png) with pre-trained SIDD AP-BSN in gpu:0 (saved as ./sample_DN.png)
-python test.py -c APBSN_SIDD -g 0 --pretrained APBSN_SIDD.pth --test_img sample_image.png
+# Test a image (./sample_image.png) with pre-trained SIDD AP-BSN in gpu:0 (image will be saved at root directory of project)
+python test.py -c APBSN_SIDD -g 0 --pretrained APBSN_SIDD.pth --test_img ./sample_image.png
+
+# Test images in a folder (./test/*)
+python test.py -c APBSN_SIDD -g 0 --pretrained APBSN_SIDD.pth --test_dir ./test
 ```
 
+---
+
 ## Results
+
+### Quantitative results
 
 Here is reported results of AP-BSN. Please refer our paper for more detailed results.
 
 ![results](./figs/results.png)
+
+### Qualitative results
+
+![visual](./figs/visual_results.png)
 
 ## Reference
 

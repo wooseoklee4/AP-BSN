@@ -19,7 +19,7 @@ from ..loss import Loss
 from ..datahandler import get_dataset_class
 from ..util.file_manager import FileManager
 from ..util.logger import Logger
-from ..util.util import human_format, rot_hflip_img, psnr, ssim, tensor2np, imread_tensor 
+from ..util.util import human_format, np2tensor, rot_hflip_img, psnr, ssim, tensor2np, imread_tensor 
 from ..util.util import pixel_shuffle_down_sampling, pixel_shuffle_up_sampling
 
 
@@ -99,7 +99,7 @@ class BaseTrainer():
             self._run_step()
             self._after_step()
 
-    def _before_test(self):
+    def _before_test(self, dataset_load):
         # initialing
         self.module = self._set_module()
         self._set_status('test')
@@ -111,7 +111,8 @@ class BaseTrainer():
         self.epoch = self.cfg['ckpt_epoch'] # for print or saving file name.
 
         # test dataset loader
-        self.test_dataloader = self._set_dataloader(self.test_cfg, batch_size=1, shuffle=False, num_workers=self.cfg['thread'])
+        if dataset_load:
+            self.test_dataloader = self._set_dataloader(self.test_cfg, batch_size=1, shuffle=False, num_workers=self.cfg['thread'])
 
         # wrapping and device setting
         if self.cfg['gpu'] != 'None':
@@ -388,12 +389,12 @@ class BaseTrainer():
         else:
             return psnr_sum/count, ssim_sum/count
 
-    def test_img(self):
+    def test_img(self, image_dir, save_dir='./'):
         '''
-        Inference a single image with measuring process time.
+        Inference a single image.
         '''
         # load image
-        noisy = imread_tensor(self.cfg['test_img'])
+        noisy = np2tensor(cv2.imread(image_dir))
         noisy = noisy.unsqueeze(0).float()
 
         # to device
@@ -401,11 +402,7 @@ class BaseTrainer():
             noisy = noisy.cuda()
 
         # forward
-        torch.cuda.synchronize()
-        start = time.time()
         denoised = self.denoiser(noisy)
-        torch.cuda.synchronize()
-        end = time.time()
 
         # post-process
         denoised += self.test_cfg['add_con']
@@ -415,11 +412,19 @@ class BaseTrainer():
         denoised = tensor2np(denoised)
         denoised = denoised.squeeze(0)
         
-        name = self.cfg['test_img'].split('/')[-1].split('.')[0]
-        self.file_manager.save_img_numpy('./', name+'_DN.png', denoised)
+        name = image_dir.split('/')[-1].split('.')[0]
+        cv2.imwrite(os.path.join(save_dir, name+'_DN.png'), denoised)
 
         # print message
-        self.logger.note('[%s] Done! Time : %.3f sec'%(self.status, end-start))
+        self.logger.note('[%s] saved : %s'%(self.status, os.path.join(save_dir, name+'_DN.png')))
+
+    def test_dir(self, direc):
+        '''
+        Inference all images in the directory.
+        '''
+        for ff in [f for f in os.listdir(direc) if os.path.isfile(os.path.join(direc, f))]:
+            os.makedirs(os.path.join(direc, 'results'), exist_ok=True)
+            self.test_img(os.path.join(direc, ff), os.path.join(direc, 'results'))
 
     def test_DND(self, img_save_path):
         '''
