@@ -161,3 +161,9 @@ Here is reported results of AP-BSN. Please refer our paper for more detailed res
   year={2022}
 }
 ```
+
+---
+
+### Update log
+
+- (22.04.15) fixed a bug of single image test without dataset, and update test code for entire image folder.
