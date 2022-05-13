@@ -8,6 +8,8 @@ This is an official PyTorch implementation of "AP-BSN: Self-Supervised Denoising
 ## Abstract
 _Blind-spot network (BSN) and its variants have made significant advances in self-supervised denoising. Nevertheless, they are still bound to synthetic noisy inputs due to less practical assumptions like pixel-wise independent noise. Hence, it is challenging to deal with spatially correlated real-world noise using self-supervised BSN. Recently, pixel-shuffle downsampling (PD) has been proposed to remove the spatial correlation of real-world noise. However, it is not trivial to integrate PD and BSN directly, which prevents the fully self-supervised denoising model on real-world images. We propose an Asymmetric PD (AP) to address this issue, which introduces different PD stride factors for training and inference. We systematically demonstrate that the proposed AP can resolve inherent trade-offs caused by specific PD stride factors and make BSN applicable to practical scenarios. To this end, we develop AP-BSN, a state-of-the-art self-supervised denoising method for real-world sRGB images. We further propose random-replacing refinement, which significantly improves the performance of our AP-BSN without any additional parameters. Extensive studies demonstrate that our method outperforms the other self-supervised and even unpaired denoising methods by a large margin, without using any additional knowledge, e.g., noise level, regarding the underlying unknown noise._
 
+[[Paper](https://arxiv.org/abs/2203.11799)]
+
 ---
 
 ## Setup
@@ -57,6 +59,13 @@ You can download pretrained checkpoints of our method. Place these files into `c
 | AP-BSN |      SIDD      |    APBSN_SIDD.yaml   | [APBSN_SIDD.pth](https://drive.google.com/file/d/1dGOtPSet0WZZ5QzSPunXtEByk8lw_fCO/view?usp=sharing) |
 | AP-BSN | SIDD_benchmark | APBSN_SIDDbench.yaml | [APBSN_SIDDbench.pth](https://drive.google.com/file/d/15U229KMfD_hquB29MwgRfFO1U4l-U3_7/view?usp=sharing) |
 | AP-BSN |      NIND      |    APBSN_NIND.yaml   | [APBSN_NIND.pth](https://drive.google.com/file/d/1O0CKMc1C44__Ae80W0DsfOUMoELX4UHA/view?usp=sharing) |
+
+### SIDD Result images (val/benchmark)
+
+Here are the result images of the SIDD validation/benchmark dataset in the main table.
+
+[[validation_images](https://drive.google.com/file/d/1MsCZ6Vy67ON5kOmql7JnjlAnZIzNyIJz/view?usp=sharing)]
+[[benchmark_images](https://drive.google.com/file/d/17g7IqIy3GFjERa61A4U1omKGKYrL2PFu/view?usp=sharing)]
 
 
 ## Quick test
@@ -167,3 +176,4 @@ Here is reported results of AP-BSN. Please refer our paper for more detailed res
 ### Update log
 
 - (22.04.15) fixed a bug of single image test without dataset, and update test code for entire image folder.
+- (22.05.13) upload result images of the SIDD validation/benchmark dataset.
